@@ -90,6 +90,8 @@ go run ./cmd/voice-realtime
 
 → [CONTRIBUTING.md](CONTRIBUTING.md) · [Good First Issues](https://github.com/lixuanqun/voice-realtime/issues?q=is%3Aopen+label%3A%22good+first+issue%22)
 
+Python 用户可以从 [examples/python_client](examples/python_client/README.md) 开始，使用 OpenAI Realtime 事件连接本地网关。
+
 ### 文档索引
 
 | 文档 | 内容 |
@@ -121,6 +123,8 @@ Switch providers without changing your client — just update the `provider` que
 | [Contributing](CONTRIBUTING.md) | How to add a new provider |
 
 **We need help with**: real-account integration testing, sample clients, new provider plugins.
+
+For a minimal Python WebSocket client, see [examples/python_client](examples/python_client/README.md).
 
 ```bash
 go run ./cmd/voice-realtime
