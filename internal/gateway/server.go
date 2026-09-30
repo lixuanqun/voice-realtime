@@ -12,11 +12,17 @@ import (
 	"github.com/lixuanqun/voice-realtime/internal/session"
 )
 
+// maxWebSocketMessageBytes bounds one client message. Realtime clients
+// batch 0.5–1s of base64-encoded PCM16 per input_audio_buffer.append, which
+// easily exceeds the library's 32 KiB default read limit (#9), so allow
+// 1 MiB per message.
+const maxWebSocketMessageBytes = 1 << 20 // 1 MiB
+
 // Server is the HTTP/WebSocket gateway.
 type Server struct {
-	cfg    *config.Config
-	log    *slog.Logger
-	mux    *http.ServeMux
+	cfg *config.Config
+	log *slog.Logger
+	mux *http.ServeMux
 }
 
 // New creates a gateway server.
@@ -80,6 +86,7 @@ func (s *Server) handleRealtime(w http.ResponseWriter, r *http.Request) {
 		s.log.Error("websocket accept failed", "err", err)
 		return
 	}
+	conn.SetReadLimit(maxWebSocketMessageBytes)
 	defer conn.Close(websocket.StatusInternalError, "handler exit")
 
 	ctx := r.Context()
